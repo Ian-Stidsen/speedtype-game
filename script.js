@@ -4,6 +4,9 @@ const randomText = document.getElementById('randomText');
 const inputText = document.getElementById('inputText');
 
 const endScreen = document.getElementsByClassName('end-screen')[0];
+const showAccuracy = document.getElementById('accuracy');
+const WPM = document.getElementById('wpm');
+const time = document.getElementById('time');
 
 function getRandomText () {
   return fetch(RANDOM_TEXT_API)
@@ -33,9 +36,9 @@ inputText.addEventListener('keypress', function (key) {
   const keyIndex = inputText.value.length;
   const textIndex = randomText.innerText[keyIndex];
   if (pressedKey === textIndex) {
-    document.getElementById(keyIndex).style.color = 'green';
+    document.getElementById(keyIndex).classList.add('green');
   } else {
-    document.getElementById(keyIndex).style.color = 'red';
+    document.getElementById(keyIndex).classList.add('red');
   }
   if (randomText.innerText[keyIndex + 1] == null) {
     endScreen.classList.add('show');
@@ -44,6 +47,10 @@ inputText.addEventListener('keypress', function (key) {
 });
 
 function getScore () {
+  const correct = document.querySelectorAll('.green').length;
+  const score = correct / inputText.value.length * 100;
+  showAccuracy.innerText = 'Accuracy: ' + score.toFixed(1) + '%';
+
   
 }
 
