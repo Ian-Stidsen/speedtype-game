@@ -1,20 +1,19 @@
 * {
   box-sizing: border-box;
   font-family: 'Times New Roman', Times, serif;
+  margin: 0;
+  padding: 0;
 }
 
 :root {
-  --size: 40;
-  --box-width: calc(var(--size) * 1vw);
-  --box-height: calc(var(--size) * 1.5vh);
+  --box-width: 300px;
+  --box-height: 400px;
 }
 
 body {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin: 0;
-  padding: 0;
+  
   width: 100vw;
   height: 100vh;
   background-color: white;
@@ -23,11 +22,12 @@ body {
 .timer {
   position: absolute;
   font-size: 5rem;
-  transform: translateY(-250px);
+  top: 100px;
 }
 
 .container {
   position: absolute;
+  top: 200px;
   width: var(--box-width);
   height: var(--box-height);
   border-radius: 10px;
@@ -36,7 +36,7 @@ body {
 }
 
 .random-text {
-  padding: 0 1rem;
+  padding: 1rem;
 }
 
 #inputText {
