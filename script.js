@@ -1,13 +1,13 @@
-const RANDOM_TEXT_API = 'https://api.quotable.io/random?minLength=150&maxLength=250';
+const RANDOM_TEXT_API = 'https://api.quotable.io/random?minLength=150&maxLength=150';
 const timer = document.getElementsByClassName('timer')[0];
 const randomText = document.getElementById('randomText');
 const inputText = document.getElementById('inputText');
+const textSpan = document.getElementsByClassName('text-span');
 
 const endScreen = document.getElementsByClassName('end-screen')[0];
 const showAccuracy = document.getElementById('accuracy');
 const WPM = document.getElementById('wpm');
 const time = document.getElementById('time');
-const textLength = inputText.value.length;
 
 function getRandomText () {
   return fetch(RANDOM_TEXT_API)
@@ -25,6 +25,7 @@ async function getNextText () {
     characterSpan.innerText = character;
     randomText.appendChild(characterSpan);
     characterSpan.id = id;
+    characterSpan.className = 'text-span';
     id++;
   });
   inputText.value = null
@@ -48,23 +49,27 @@ function start () {
   }, 10)
 }
 
+function endTime() {
+  time.innerText = 'Time: ' + timer.innerText + 'seconds';
+};
+
 function accuracy () {
   const correct = document.querySelectorAll('.green').length;
   const score = correct / inputText.value.length * 100;
-  showAccuracy.innerText = 'Accuracy: ' + score.toFixed(1) + '%';  
+  showAccuracy.innerText = 'Accuracy: ' + score.toFixed(0) + '%';  
 };
 
 function wpm () {
   let words = 1;
-  for (let i = 0; i < textLength; i++) {
-    if (i === ' ') {
+  for (let i = 0; i < 150; i++) {
+    if (textSpan[i].innerText === ' ') {
       words++;
-      console.log(words);
     }
   }
-  const minutes = parseFloat(timer.innerText) / 60
+
+  const minutes = parseFloat(timer.innerText / 60);
   const wordsPerMinute = words / minutes;
-  WPM.innerText = 'WPM' + wordsPerMinute.toFixed(1);
+  WPM.innerText = 'WPM: ' + wordsPerMinute.toFixed(1);
 };
 
 inputText.addEventListener('keypress', function (e) {
@@ -84,13 +89,18 @@ inputText.addEventListener('keypress', function (e) {
   }
 
   if (randomText.innerText[keyIndex + 1] == null) {
-    inputText.disabled = true;
-    endScreen.classList.add('show');
-    started = false;
-    accuracy();
-    wpm();
+    finish();
   }
 });
+
+function finish() {
+  inputText.disabled = true;
+  endScreen.classList.add('show');
+  started = false;
+  accuracy();
+  wpm();
+  endTime();
+};
 
 inputText.addEventListener('keydown', (e) => {
   const keyIndex = inputText.value.length;
@@ -99,3 +109,7 @@ inputText.addEventListener('keydown', (e) => {
     document.getElementById(keyIndex - 1).classList.remove('red');
   }
 });
+
+window.addEventListener('click', () => {
+  console.log(wpm())
+})
